@@ -1093,6 +1093,11 @@ public class NanoHTTPD
 		}
 
 		res.addHeader( "Accept-Ranges", "bytes"); // Announce that the file server accepts partial content requestes
+		res.addHeader("Access-Control-Allow-Origin", "*");
+        res.addHeader("Access-Control-Max-Age", "3628800");
+        res.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
+        res.addHeader("Access-Control-Allow-Headers", "Authorization");
 		return res;
 	}
 
