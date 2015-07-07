@@ -92,9 +92,6 @@ public class CorHttpd extends CordovaPlugin {
                     if(!inetAddress.isLoopbackAddress()){
                       if (inetAddress instanceof Inet4Address) {
                         resultIpv4 = inetAddress.getHostAddress().toString();
-                        } else if (inetAddress instanceof Inet6Address) {
-                          resultIpv6 = inetAddress.getHostAddress().toString();
-                        }
                     }
                 }
             }
