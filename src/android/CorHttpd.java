@@ -78,19 +78,27 @@ public class CorHttpd extends CordovaPlugin {
     
     private String __getLocalIpAddress() {
     	try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            String resultIpv6 = "";
+            String resultIpv4 = "";
+              
+              for (Enumeration en = NetworkInterface.getNetworkInterfaces(); 
+                en.hasMoreElements();) {
+
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration enumIpAddr = intf.getInetAddresses(); 
+                    enumIpAddr.hasMoreElements();) {
+
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (! inetAddress.isLoopbackAddress()) {
-                    	String ip = inetAddress.getHostAddress();
-                    	if(InetAddressUtils.isIPv4Address(ip)) {
-                    		Log.w(LOGTAG, "local IP: "+ ip);
-                    		return ip;
-                    	}
+                    if(!inetAddress.isLoopbackAddress()){
+                      if (inetAddress instanceof Inet4Address) {
+                        resultIpv4 = inetAddress.getHostAddress().toString();
+                        } else if (inetAddress instanceof Inet6Address) {
+                          resultIpv6 = inetAddress.getHostAddress().toString();
+                        }
                     }
                 }
             }
+            return ((resultIpv4.length() > 0) ? resultIpv4 : resultIpv6);
         } catch (SocketException ex) {
             Log.e(LOGTAG, ex.toString());
         }
