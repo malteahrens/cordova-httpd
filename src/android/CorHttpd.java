@@ -147,8 +147,7 @@ public class CorHttpd extends CordovaPlugin {
     		f.setAssetManager( am );
     		
     		if(localhost_only) {
-                String localHost = InetAddress.getLocalHost().getHostAddress();
-    			InetSocketAddress localAddr = InetSocketAddress.createUnresolved(localHost, port);
+    			InetSocketAddress localAddr = InetSocketAddress.createUnresolved('10.0.2.2', port);
     			server = new WebServer(localAddr, f);
     		} else {
     			server = new WebServer(port, f);
