@@ -78,24 +78,19 @@ public class CorHttpd extends CordovaPlugin {
     
     private String __getLocalIpAddress() {
     	try {
-            String resultIpv6 = "";
-            String resultIpv4 = "";
-              
-              for (Enumeration en = NetworkInterface.getNetworkInterfaces(); 
-                en.hasMoreElements();) {
-
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration enumIpAddr = intf.getInetAddresses(); 
-                    enumIpAddr.hasMoreElements();) {
-
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if(!inetAddress.isLoopbackAddress()){
-                      if (inetAddress instanceof Inet4Address) {
-                        resultIpv4 = inetAddress.getHostAddress().toString();
+                    if (! inetAddress.isLoopbackAddress()) {
+                    	String ip = inetAddress.getHostAddress();
+                    	if(InetAddressUtils.isIPv4Address(ip)) {
+                    		Log.w(LOGTAG, "local IP: "+ ip);
+                    		return ip;
+                    	}
                     }
                 }
             }
-            return ((resultIpv4.length() > 0) ? resultIpv4 : resultIpv6);
         } catch (SocketException ex) {
             Log.e(LOGTAG, ex.toString());
         }
@@ -152,7 +147,7 @@ public class CorHttpd extends CordovaPlugin {
     		f.setAssetManager( am );
     		
     		if(localhost_only) {
-                String localHost = __getLocalIpAddress();
+                String localHost = "127.0.0.1";
                 InetSocketAddress localAddr = new InetSocketAddress(localHost, port);
     			server = new WebServer(localAddr, f);
     		} else {
