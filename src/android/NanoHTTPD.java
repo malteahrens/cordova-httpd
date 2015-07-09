@@ -1098,6 +1098,8 @@ public class NanoHTTPD
         res.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         res.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
         res.addHeader("Access-Control-Allow-Headers", "Authorization");
+        res.addHeader("Content-Type", "application/x-protobuf");
+        res.addHeader("Content-Encoding", "deflate");
 		return res;
 	}
 
